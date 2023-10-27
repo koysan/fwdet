@@ -575,8 +575,8 @@ class FwDET(QgsProcessingAlgorithm):
                         'format' : 1, 'min_slope' : 0, 'precision' : 0, 'slope' : 'TEMPORARY_OUTPUT', 
                         'zscale' : 1 })['slope']
                        
-            #apply filter
-            boundary2 = self._gdal_calc({'FORMULA':f'B*(A > {slopeTH})', 
+            #apply filter; removes slope % above input threshold from flood boundary
+            boundary2 = self._gdal_calc({'FORMULA':f'B*(A <= {slopeTH})', 
                                 'INPUT_A':slope_fp, 'BAND_A':1, 
                                 'INPUT_B':boundary1, 'BAND_B':1,
                                 'NO_DATA':0.0,'OUTPUT':'TEMPORARY_OUTPUT', 'RTYPE':5})
