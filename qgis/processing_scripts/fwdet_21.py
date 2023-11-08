@@ -437,7 +437,7 @@ class FwDET(QgsProcessingAlgorithm):
                    )['OUTPUT']
         
         #mask negatives and inundation
-        water_depth = self._gdal_calc({'FORMULA':'A * (A > 0) * (B == 1)', 
+        water_depth = self._gdal_calc({'FORMULA':'A * (A >= 0) * (B == 1)', 
                                 'INPUT_A':diff_rlay, 'BAND_A':1, 
                                 #'INPUT_B':dem_rlay, 'BAND_B':1,
                                 'INPUT_B':inun_rlay, 'BAND_B':1,
@@ -576,7 +576,7 @@ class FwDET(QgsProcessingAlgorithm):
                         'zscale' : 1 })['slope']
                        
             #apply filter
-            boundary2 = self._gdal_calc({'FORMULA':f'B*(A > {slopeTH})', 
+            boundary2 = self._gdal_calc({'FORMULA':f'B*(A <= {slopeTH})', 
                                 'INPUT_A':slope_fp, 'BAND_A':1, 
                                 'INPUT_B':boundary1, 'BAND_B':1,
                                 'NO_DATA':0.0,'OUTPUT':'TEMPORARY_OUTPUT', 'RTYPE':5})
